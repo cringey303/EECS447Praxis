@@ -1,15 +1,15 @@
 :root {
     color-scheme: light;
-    --bg: #5bc1eb;
-    --panel: #19b7ea;
-    --panel-alt: #28cdf6;
+    --bg: #a9d3e8;
+    --panel: #f4fbff;
+    --panel-alt: #e4f4fb;
     --text: #06284d;
     --text-soft: #0f4f7e;
-    --border: #5c6674;
-    --border-soft: #8a95a3;
-    --accent: #ffffff;
+    --border: #7d9db3;
+    --border-soft: #a6bfd0;
+    --accent: #0a5f90;
     --danger: #d84343;
-    --shadow: rgba(20, 58, 88, 0.25);
+    --shadow: rgba(20, 58, 88, 0.15);
 }
 
 * {
@@ -23,165 +23,19 @@ body {
 
 body {
     margin: 0;
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 28%),
-        linear-gradient(180deg, #8ed8f1 0%, #64c7ea 45%, #4fbce7 100%);
+    background: var(--bg);
     color: var(--text);
     font-family: Tahoma, Verdana, Arial, sans-serif;
     line-height: 1.35;
 }
 
-body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image:
-        radial-gradient(circle at 12px 10px, rgba(255, 255, 255, 0.96) 0 9px, transparent 10px),
-        radial-gradient(circle at 28px 12px, rgba(255, 255, 255, 0.98) 0 14px, transparent 15px),
-        radial-gradient(circle at 46px 10px, rgba(255, 255, 255, 0.94) 0 10px, transparent 11px),
-        radial-gradient(circle at 24px 28px, rgba(255, 255, 255, 0.96) 0 15px, transparent 16px);
-    background-size: 120px 86px;
-    opacity: 0.85;
-    z-index: 0;
-}
-
-.cloud-field {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background:
-        radial-gradient(circle at 78% 12%, rgba(255, 255, 255, 0.98) 0 18px, transparent 19px),
-        radial-gradient(circle at 82% 16%, rgba(255, 255, 255, 0.96) 0 28px, transparent 29px),
-        radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.96) 0 20px, transparent 21px),
-        radial-gradient(circle at 34% 24%, rgba(255, 255, 255, 0.96) 0 30px, transparent 31px),
-        radial-gradient(circle at 8% 36%, rgba(255, 255, 255, 0.96) 0 16px, transparent 17px),
-        radial-gradient(circle at 12% 40%, rgba(255, 255, 255, 0.96) 0 28px, transparent 29px),
-        radial-gradient(circle at 58% 46%, rgba(255, 255, 255, 0.98) 0 22px, transparent 23px),
-        radial-gradient(circle at 62% 50%, rgba(255, 255, 255, 0.98) 0 34px, transparent 35px),
-        radial-gradient(circle at 88% 66%, rgba(255, 255, 255, 0.96) 0 18px, transparent 19px),
-        radial-gradient(circle at 92% 70%, rgba(255, 255, 255, 0.96) 0 28px, transparent 29px);
-    background-repeat: repeat;
-    background-size: 420px 260px;
-    z-index: 1;
-}
-
 .app-shell {
     position: relative;
-    z-index: 2;
     width: min(1200px, calc(100% - 18px));
     margin: 12px auto 24px;
-    border: 3px solid #4f5a66;
-    background: rgba(198, 232, 246, 0.86);
-    box-shadow: 0 0 0 2px #f7f7f7, 0 16px 30px var(--shadow);
-}
-
-.window-frame {
-    border-bottom: 3px solid #798390;
-    background: linear-gradient(180deg, #e9eef4 0%, #c5ccd6 100%);
-}
-
-.titlebar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    padding: 8px 10px;
-    background: linear-gradient(180deg, #2293df 0%, #137ac5 100%);
-    color: #fff;
-    border-bottom: 1px solid #0f5e96;
-}
-
-.titlebar-left,
-.window-controls,
-.toolbar-icons {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.window-dot {
-    width: 10px;
-    height: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    background: rgba(255, 255, 255, 0.65);
-}
-
-.titlebar-text {
-    font-weight: 700;
-    letter-spacing: 0.02em;
-}
-
-.window-controls span,
-.toolbar-icons span,
-.logo-tile {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border: 1px solid #6a7380;
-    background: linear-gradient(180deg, #f6f8fb 0%, #d7dde5 100%);
-    color: #243849;
-    font-size: 0.8rem;
-}
-
-.menubar,
-.toolbar-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 10px;
-    background: linear-gradient(180deg, #f7f9fc 0%, #dde4ec 100%);
-    border-bottom: 1px solid #a7b0ba;
-}
-
-.menubar {
-    gap: 20px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    color: #233547;
-    font-size: 0.92rem;
-}
-
-.toolbar-row {
-    gap: 12px;
-}
-
-.toolbar-icons {
-    flex: 0 0 auto;
-}
-
-.address-bar {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #233547;
-}
-
-.address-bar label {
-    font-weight: 700;
-}
-
-.address-bar input {
-    flex: 1;
-    min-width: 0;
-    border: 1px solid #7d8792;
-    background: #fff;
-    color: #1c2a36;
-    padding: 7px 10px;
-    font: inherit;
-}
-
-.logo-tile {
-    width: 64px;
-    height: 64px;
-    border: 2px solid #2b95d4;
-    background: linear-gradient(180deg, #62d0ff 0%, #1494db 100%);
-    color: #fff;
-    font-size: 2.1rem;
-    font-weight: 700;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    box-shadow: 0 10px 24px var(--shadow);
 }
 
 .masthead,
@@ -200,7 +54,7 @@ body::before {
     justify-content: space-between;
     align-items: flex-start;
     padding: 18px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3));
+    background: var(--panel);
 }
 
 .eyebrow,
@@ -210,7 +64,7 @@ body::before {
     letter-spacing: 0.16em;
     text-transform: uppercase;
     font-size: 0.78rem;
-    color: var(--text-soft);
+    color: var(--accent);
 }
 
 h1,
@@ -224,32 +78,24 @@ h1 {
     margin-bottom: 8px;
     font-size: clamp(2rem, 4vw, 3rem);
     font-family: 'Trebuchet MS', Tahoma, sans-serif;
-    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.75);
-}
-
-.lede {
-    margin-bottom: 0;
-    max-width: 62ch;
-    color: #17395a;
 }
 
 .session-card {
     min-width: min(320px, 100%);
     padding: 14px;
-    background: linear-gradient(180deg, rgba(47, 191, 242, 0.92), rgba(12, 156, 229, 0.92));
-    color: #fff;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    background: var(--panel-alt);
+    color: var(--text);
 }
 
 .session-name {
     margin: 0;
     font-size: 1.2rem;
-    color: #fff;
+    color: var(--text);
 }
 
 .session-meta {
     margin: 4px 0 14px;
-    color: rgba(255, 255, 255, 0.92);
+    color: var(--text-soft);
 }
 
 .user-switcher {
@@ -262,7 +108,7 @@ h1 {
     font-size: 0.8rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #17395a;
+    color: var(--text-soft);
 }
 
 .user-switcher select,
@@ -273,9 +119,9 @@ h1 {
 button,
 a.button {
     width: 100%;
-    border: 1px solid #73808d;
-    background: linear-gradient(180deg, #fefefe 0%, #dde5ee 100%);
-    color: #203546;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text);
     font: inherit;
     padding: 10px 12px;
     text-decoration: none;
@@ -295,7 +141,7 @@ a.button:focus {
     gap: 10px;
     padding: 12px 18px;
     border-width: 0 0 2px;
-    background: linear-gradient(180deg, #1f9fe7 0%, #1a87d1 100%);
+    background: var(--panel-alt);
 }
 
 .topbar a,
@@ -306,11 +152,10 @@ a.button:focus {
     justify-content: center;
     min-height: 34px;
     padding: 0 12px;
-    color: #fff;
+    color: var(--text);
     text-decoration: none;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--border);
+    background: #fff;
 }
 
 .content {
@@ -323,16 +168,14 @@ a.button:focus {
 .empty-state {
     margin-bottom: 18px;
     padding: 14px;
-    background: linear-gradient(180deg, rgba(42, 196, 241, 0.95), rgba(10, 157, 224, 0.95));
-    color: #fff;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    background: var(--panel);
+    color: var(--text);
 }
 
 .panel-title,
 .section-title {
     margin-bottom: 10px;
-    color: #fff;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.18);
+    color: var(--text);
 }
 
 .search-form {
@@ -381,8 +224,8 @@ td {
 }
 
 th {
-    background: linear-gradient(180deg, #6cd5f7 0%, #2bc0f1 100%);
-    color: #fff;
+    background: var(--panel-alt);
+    color: var(--text);
     text-align: left;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -390,26 +233,26 @@ th {
 }
 
 tbody tr:nth-child(even) td {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.55);
 }
 
 .status {
     display: inline-block;
     padding: 2px 8px;
-    border: 1px solid rgba(255, 255, 255, 0.45);
+    border: 1px solid var(--border);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     font-size: 0.78rem;
-    background: rgba(255, 255, 255, 0.14);
-    color: #fff;
+    background: #fff;
+    color: var(--text);
 }
 
 .status.open {
-    color: #f4fff1;
+    color: #0d6b42;
 }
 
 .status.closed {
-    color: #ffe0e0;
+    color: var(--danger);
 }
 
 .inline-form {
@@ -424,11 +267,11 @@ tbody tr:nth-child(even) td {
 }
 
 .muted {
-    color: #e6f9ff;
+    color: var(--text-soft);
 }
 
 .empty-state {
-    color: #fff;
+    color: var(--text);
 }
 
 .stack {
@@ -444,17 +287,13 @@ tbody tr:nth-child(even) td {
 
 .card {
     padding: 14px;
-    border: 2px solid rgba(39, 108, 152, 0.7);
-    background: linear-gradient(180deg, rgba(250, 252, 255, 0.25), rgba(255, 255, 255, 0.1));
-    color: #fff;
+    border: 2px solid var(--border);
+    background: var(--panel);
+    color: var(--text);
 }
 
 .card h3 {
     margin-bottom: 8px;
-}
-
-.hero-copy {
-    max-width: 740px;
 }
 
 .table-wrap {
@@ -462,7 +301,7 @@ tbody tr:nth-child(even) td {
 }
 
 .table-wrap table {
-    background: rgba(255, 255, 255, 0.08);
+    background: #fff;
 }
 
 .search-form {
@@ -477,15 +316,15 @@ tbody tr:nth-child(even) td {
 }
 
 .search-form input::placeholder {
-    color: #5c7892;
+    color: #7c8f9d;
 }
 
 .search-form .actions button,
 .inline-form button,
 .user-switcher button {
-    background: linear-gradient(180deg, #fff 0%, #d9e2eb 100%);
-    color: #25405a;
-    border: 1px solid #7d8793;
+    background: #fff;
+    color: var(--text);
+    border: 1px solid var(--border);
 }
 
 .search-form .actions button:hover,
@@ -493,37 +332,14 @@ tbody tr:nth-child(even) td {
 .user-switcher button:hover,
 .topbar a:hover,
 a.button:hover {
-    filter: brightness(1.03);
+    background: #f2f8fb;
 }
 
 @media (max-width: 860px) {
-    .window-frame,
-    .titlebar,
-    .toolbar-row,
     .masthead,
     .topbar {
         flex-direction: column;
         align-items: stretch;
-    }
-
-    .titlebar-left,
-    .window-controls,
-    .toolbar-icons {
-        justify-content: flex-start;
-        flex-wrap: wrap;
-    }
-
-    .address-bar {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .logo-tile {
-        align-self: flex-end;
-    }
-
-    .masthead {
-        flex-direction: column;
     }
 
     .search-form {

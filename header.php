@@ -7,11 +7,6 @@ set_current_user_from_request();
 $currentUser = current_user();
 $allUsers = db_fetch_all('SELECT id, handle, display_name, major FROM Users ORDER BY display_name ASC');
 $pageTitle = $pageTitle ?? 'Praxis';
-$addressValue = match ($pageTitle) {
-    'Project Feed' => 'http://twitter.com',
-    'Session Profile' => 'http://twitter.com/profile.php',
-    default => 'http://twitter.com',
-};
 ?>
 <!doctype html>
 <html lang="en">
@@ -22,49 +17,11 @@ $addressValue = match ($pageTitle) {
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="cloud-field"></div>
     <div class="app-shell">
-        <div class="window-frame">
-            <div class="titlebar">
-                <div class="titlebar-left">
-                    <span class="window-dot"></span>
-                    <span class="window-dot"></span>
-                    <span class="window-dot"></span>
-                    <span class="titlebar-text">Praxis Browser</span>
-                </div>
-                <div class="window-controls" aria-hidden="true">
-                    <span>_</span>
-                    <span>□</span>
-                    <span>×</span>
-                </div>
-            </div>
-            <div class="menubar" aria-label="Site menu">
-                <span>File</span>
-                <span>Edit</span>
-                <span>View</span>
-                <span>Favorites</span>
-                <span>Help</span>
-            </div>
-            <div class="toolbar-row">
-                <div class="toolbar-icons" aria-hidden="true">
-                    <span>◀</span>
-                    <span>▶</span>
-                    <span>⌂</span>
-                    <span>✉</span>
-                    <span>★</span>
-                </div>
-                <div class="address-bar">
-                    <label for="address">Address:</label>
-                    <input id="address" type="text" value="<?php echo h($addressValue); ?>" readonly>
-                </div>
-                <div class="logo-tile" aria-hidden="true">P</div>
-            </div>
-        </div>
         <header class="masthead">
-            <div class="hero-copy">
-                <p class="eyebrow">Praxis Network</p>
+            <div>
+                <p class="eyebrow">Praxis</p>
                 <h1><?php echo h($pageTitle); ?></h1>
-                <p class="lede">A retro campus feed styled like an old-school web client with bold chrome, bright panels, and simple tables.</p>
             </div>
             <div class="session-card">
                 <p class="session-label">SESSION USER</p>
