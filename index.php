@@ -54,7 +54,7 @@ $projects = db_fetch_all(
     <form class="search-form" method="get" action="index.php">
         <div class="field wide">
             <label for="q">Search text</label>
-            <input id="q" name="q" type="text" value="<?php echo h($searchText); ?>" placeholder="Project title, summary, or owner">
+            <input id="q" name="q" type="text" value="<?php echo h($searchText); ?>" placeholder="Project title, description, or owner">
         </div>
         <div class="field">
             <label for="major">Desired major</label>

@@ -82,7 +82,7 @@ INSERT INTO Users (id, handle, display_name, email, major, bio) VALUES
 INSERT INTO Organizations (id, name, description) VALUES
 (1, 'Microsoft', 'Software, services, and tools for developers and businesses.'),
 (2, "Bob's Burgers", 'A local burger joint.'),
-(3, 'Praxis', 'A platform for connecting students with real-world projects and organizations.');
+(3, 'University of Kansas', 'Located in Lawrence, Kansas.');
 
 INSERT INTO Projects (id, owner_user_id, title, summary, status) VALUES
 (1, 6, 'Facebook', 'The Facebook project.', 'open'),
