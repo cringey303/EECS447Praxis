@@ -38,27 +38,14 @@ body {
     box-shadow: 0 10px 24px var(--shadow);
 }
 
-.masthead,
-.topbar,
+.navbar,
 .content,
 .panel,
 .table-wrap,
-.empty-state,
-.session-card {
+.empty-state {
     border: 2px solid #6d7884;
 }
 
-.masthead {
-    display: flex;
-    gap: 16px;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 18px;
-    background: var(--panel);
-}
-
-.eyebrow,
-.session-label,
 .section-label {
     margin: 0 0 6px;
     letter-spacing: 0.16em;
@@ -67,40 +54,41 @@ body {
     color: var(--accent);
 }
 
-h1,
 h2,
 h3,
 p {
     margin-top: 0;
 }
 
-h1 {
-    margin-bottom: 8px;
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-family: 'Trebuchet MS', Tahoma, sans-serif;
+.nav-switcher {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
 }
 
-.session-card {
-    min-width: min(320px, 100%);
-    padding: 14px;
-    background: var(--panel-alt);
-    color: var(--text);
-}
-
-.session-name {
-    margin: 0;
-    font-size: 1.2rem;
-    color: var(--text);
-}
-
-.session-meta {
-    margin: 4px 0 14px;
+.nav-switcher label {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: var(--text-soft);
+    white-space: nowrap;
 }
 
 .user-switcher {
     display: grid;
     gap: 8px;
+}
+
+.nav-switcher select,
+.nav-switcher button {
+    width: auto;
+    min-height: 34px;
+    padding: 6px 10px;
+}
+
+.nav-switcher select {
+    min-width: 220px;
 }
 
 .user-switcher label,
@@ -136,15 +124,17 @@ a.button:focus {
     outline-offset: 2px;
 }
 
-.topbar {
+.navbar {
     display: flex;
     gap: 10px;
     padding: 12px 18px;
     border-width: 0 0 2px;
     background: var(--panel-alt);
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-.topbar a,
+.nav-button,
 .actions a,
 .inline-link {
     display: inline-flex;
@@ -156,6 +146,16 @@ a.button:focus {
     text-decoration: none;
     border: 1px solid var(--border);
     background: #fff;
+}
+
+.nav-button.active {
+    background: #1f86d6;
+    color: #fff;
+    border-color: #0f5f9b;
+}
+
+.nav-button.active:hover {
+    background: #1f86d6;
 }
 
 .content {
@@ -201,9 +201,21 @@ a.button:focus {
 }
 
 .search-form .actions button,
-.inline-form button {
+.search-form .actions .button,
+.inline-form button,
+.nav-switcher button {
     width: auto;
     cursor: pointer;
+}
+
+.search-form .actions button,
+.search-form .actions .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 12px;
+    white-space: nowrap;
 }
 
 .table-wrap {
@@ -327,19 +339,30 @@ tbody tr:nth-child(even) td {
     border: 1px solid var(--border);
 }
 
+a:hover,
 .search-form .actions button:hover,
 .inline-form button:hover,
-.user-switcher button:hover,
-.topbar a:hover,
+.nav-switcher button:hover,
+.nav-button:hover,
 a.button:hover {
     background: #f2f8fb;
 }
 
 @media (max-width: 860px) {
-    .masthead,
-    .topbar {
+    .navbar {
         flex-direction: column;
         align-items: stretch;
+    }
+
+    .nav-switcher {
+        margin-left: 0;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .nav-switcher select,
+    .nav-switcher button {
+        width: 100%;
     }
 
     .search-form {

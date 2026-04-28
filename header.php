@@ -18,30 +18,19 @@ $pageTitle = $pageTitle ?? 'Praxis';
 </head>
 <body>
     <div class="app-shell">
-        <header class="masthead">
-            <div>
-                <p class="eyebrow">Praxis</p>
-                <h1><?php echo h($pageTitle); ?></h1>
-            </div>
-            <div class="session-card">
-                <p class="session-label">SESSION USER</p>
-                <p class="session-name"><?php echo h($currentUser['display_name']); ?></p>
-                <p class="session-meta">@<?php echo h($currentUser['handle']); ?> • <?php echo h($currentUser['major']); ?></p>
-                <form class="user-switcher" method="get">
-                    <label for="user_id">Switch user</label>
-                    <select id="user_id" name="user_id" onchange="this.form.submit()">
-                        <?php foreach ($allUsers as $user): ?>
-                            <option value="<?php echo h((string) $user['id']); ?>" <?php echo (int) $user['id'] === (int) $currentUser['id'] ? 'selected' : ''; ?>>
-                                <?php echo h($user['display_name']); ?> (@<?php echo h($user['handle']); ?>)
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                    <noscript><button type="submit">Set user</button></noscript>
-                </form>
-            </div>
-        </header>
-        <nav class="topbar">
-            <a href="index.php">Feed</a>
-            <a href="profile.php">Profile</a>
+        <nav class="navbar" aria-label="Primary">
+            <a class="nav-button <?php echo $pageTitle === 'Project Feed' ? 'active' : ''; ?>" href="index.php">Feed</a>
+            <a class="nav-button <?php echo $pageTitle === 'Session Profile' ? 'active' : ''; ?>" href="profile.php">Profile</a>
+            <form class="nav-switcher" method="get">
+                <label for="user_id">Switch user</label>
+                <select id="user_id" name="user_id">
+                    <?php foreach ($allUsers as $user): ?>
+                        <option value="<?php echo h((string) $user['id']); ?>" <?php echo (int) $user['id'] === (int) $currentUser['id'] ? 'selected' : ''; ?>>
+                            <?php echo h($user['display_name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <button type="submit">Switch User</button>
+            </form>
         </nav>
         <main class="content">

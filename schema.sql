@@ -75,42 +75,45 @@ CREATE TABLE User_Organization (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO Users (id, handle, display_name, email, major, bio) VALUES
-(1, 'luke', 'Luke Coffman', 'luke@praxis.local', 'Computer Science', 'Retro terminal tinkerer.'),
-(2, 'lucas', 'Lucas Root', 'lucas@praxis.local', 'Electrical Engineering', 'Likes circuits, screens, and low-friction tools.'),
-(3, 'ada', 'Ada Pixel', 'ada@praxis.local', 'Interactive Media', 'Builds playful interfaces with strict constraints.');
+(1, 'luke', 'Luke Coffman', 'luke@praxis.local', 'Computer Science', ''),
+(2, 'lucas', 'Lucas Root', 'lucas@praxis.local', 'Computer Science', "Hi, I'm Lucas, a Computer Science and Cybersecurity student @ KU."),
+(3, 'alice', 'Alice Smith', 'alice@praxis.local', 'Marketing', "Marketing enthusiast with a passion for creative campaigns."),
+(4, 'bob', 'Bob Johnson', 'bob@praxis.local', 'Art', 'Contemprary artist. Works with digital media and interactive installations.'),
+(5, 'carol', 'Carol Davis', 'carol@praxis.local', 'Cybersecurity Engineering', '"Protect the digital frontier."'),
+(6, 'mark', 'Mark Zuckerberg', 'mark@praxis.local', 'Computer Science', 'Co-founder and CEO of Facebook.');
 
 INSERT INTO Organizations (id, name, description) VALUES
-(1, 'Praxis Lab', 'A small studio for campus projects and demos.'),
-(2, 'Signal Club', 'Hardware, software, and polished student prototypes.');
+(1, 'Microsoft', 'Software, services, and tools for developers and businesses.'),
+(2, "Bob's Burgers", 'A local burger joint.'),
+(3, 'Praxis', 'A platform for connecting students with real-world projects and organizations.');
 
 INSERT INTO Projects (id, organization_id, owner_user_id, title, summary, status) VALUES
-(1, 1, 1, 'Praxis Feed', 'A minimalist project feed with inline filtering and status toggles.', 'open'),
-(2, 1, 2, 'Campus Oscilloscope', 'A student-facing dashboard for visualizing sensor traces.', 'open'),
-(3, 2, 3, 'Retro RSVP Board', 'A terminal-style event board for club signups and attendance.', 'closed'),
-(4, 2, 2, 'Signal Notes', 'A compact knowledge log for lab members and project notes.', 'open');
+(1, 1, 1, 'Facebook', 'The Facebook project.', 'open'),
+(2, 1, 2, 'Order Dashboard', 'A dashboard for managing orders.', 'open'),
+(3, 2, 3, 'New Menu Items', 'Developing new menu items for the restaurant.', 'open'),
+(4, 1, 2, 'Security Audit', 'Conducting a security audit of our systems.', 'open');
+(5, 3, 6, 'Praxis Platform', 'Building the Praxis platform for connecting students with projects.', 'open');
 
 INSERT INTO Project_Desired_Majors (project_id, major) VALUES
 (1, 'Computer Science'),
-(1, 'Interactive Media'),
-(2, 'Electrical Engineering'),
 (2, 'Computer Science'),
-(3, 'Interactive Media'),
-(3, 'Art'),
-(4, 'Electrical Engineering'),
-(4, 'Computer Science');
+(3, 'Marketing'),
+(4, 'Computer Science'),
+(4, 'Cybersecurity Engineering');
 
 INSERT INTO User_Project (user_id, project_id, role) VALUES
 (1, 1, 'Owner'),
-(2, 1, 'Contributor'),
+(2, 1, 'Member'),
 (2, 2, 'Owner'),
-(1, 2, 'Contributor'),
 (3, 3, 'Owner'),
-(2, 3, 'Contributor'),
+(4, 3, 'Member'),
 (2, 4, 'Owner'),
-(3, 4, 'Contributor');
+(5, 4, 'Member');
 
 INSERT INTO User_Organization (user_id, organization_id, role) VALUES
-(1, 1, 'Founder'),
+(1, 1, 'Member'),
 (2, 1, 'Member'),
-(2, 2, 'Founder'),
-(3, 2, 'Member');
+(3, 2, 'Owner'),
+(4, 2, 'Member'),
+(5, 1, 'Member'),
+(6, 1, 'Founder');

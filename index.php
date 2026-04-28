@@ -72,7 +72,7 @@ $projects = db_fetch_all(
             </select>
         </div>
         <div class="actions">
-            <button type="submit">Filter feed</button>
+            <button type="submit">Filter</button>
             <a class="button" href="index.php">Reset</a>
         </div>
     </form>
