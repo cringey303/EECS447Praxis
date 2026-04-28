@@ -32,11 +32,9 @@ $joinedProjects = db_fetch_all(
         p.owner_user_id,
         up.role,
         up.joined_at,
-        o.name AS organization_name,
         owner.display_name AS owner_name
     FROM User_Project up
     JOIN Projects p ON p.id = up.project_id
-    JOIN Organizations o ON o.id = p.organization_id
     JOIN Users owner ON owner.id = p.owner_user_id
     WHERE up.user_id = :user_id
     ORDER BY p.created_at DESC, p.id DESC
@@ -89,7 +87,6 @@ $joinedProjects = db_fetch_all(
             <thead>
                 <tr>
                     <th>Project</th>
-                    <th>Organization</th>
                     <th>Owner</th>
                     <th>Role</th>
                     <th>Status</th>
@@ -99,7 +96,7 @@ $joinedProjects = db_fetch_all(
             <tbody>
                 <?php if ($joinedProjects === []): ?>
                     <tr>
-                        <td colspan="6" class="empty-state">This session user has not joined any projects.</td>
+                        <td colspan="5" class="empty-state">This session user has not joined any projects.</td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($joinedProjects as $project): ?>
@@ -108,7 +105,6 @@ $joinedProjects = db_fetch_all(
                                 <strong><?php echo h($project['title']); ?></strong><br>
                                 <span class="muted"><?php echo h($project['summary']); ?></span>
                             </td>
-                            <td><?php echo h($project['organization_name']); ?></td>
                             <td><?php echo h($project['owner_name']); ?></td>
                             <td><?php echo h($project['role']); ?></td>
                             <td><span class="status <?php echo h($project['status']); ?>"><?php echo h($project['status']); ?></span></td>

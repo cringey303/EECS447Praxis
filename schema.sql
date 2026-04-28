@@ -29,7 +29,6 @@ CREATE TABLE Organizations (
 
 CREATE TABLE Projects (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    organization_id INT UNSIGNED NOT NULL,
     owner_user_id INT UNSIGNED NOT NULL,
     title VARCHAR(140) NOT NULL,
     summary VARCHAR(500) NOT NULL,
@@ -37,10 +36,8 @@ CREATE TABLE Projects (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY idx_projects_organization_id (organization_id),
     KEY idx_projects_owner_user_id (owner_user_id),
     KEY idx_projects_status (status),
-    CONSTRAINT fk_projects_organization FOREIGN KEY (organization_id) REFERENCES Organizations (id) ON DELETE CASCADE,
     CONSTRAINT fk_projects_owner FOREIGN KEY (owner_user_id) REFERENCES Users (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -87,33 +84,40 @@ INSERT INTO Organizations (id, name, description) VALUES
 (2, "Bob's Burgers", 'A local burger joint.'),
 (3, 'Praxis', 'A platform for connecting students with real-world projects and organizations.');
 
-INSERT INTO Projects (id, organization_id, owner_user_id, title, summary, status) VALUES
-(1, 1, 1, 'Facebook', 'The Facebook project.', 'open'),
-(2, 1, 2, 'Order Dashboard', 'A dashboard for managing orders.', 'open'),
-(3, 2, 3, 'New Menu Items', 'Developing new menu items for the restaurant.', 'open'),
-(4, 1, 2, 'Security Audit', 'Conducting a security audit of our systems.', 'open');
-(5, 3, 6, 'Praxis Platform', 'Building the Praxis platform for connecting students with projects.', 'open');
+INSERT INTO Projects (id, owner_user_id, title, summary, status) VALUES
+(1, 6, 'Facebook', 'The Facebook project.', 'open'),
+(2, 1, 'Order Dashboard', 'A dashboard for managing orders.', 'open'),
+(3, 4, 'New Menu Items', 'Developing new menu items for the restaurant.', 'open'),
+(4, 6, 'Security Audit', 'Conducting a security audit of our systems.', 'open'),
+(5, 2, 'Praxis Platform', 'Building the Praxis platform for connecting students with projects.', 'open');
 
 INSERT INTO Project_Desired_Majors (project_id, major) VALUES
 (1, 'Computer Science'),
 (2, 'Computer Science'),
 (3, 'Marketing'),
 (4, 'Computer Science'),
-(4, 'Cybersecurity Engineering');
+(4, 'Cybersecurity Engineering'),
+(5, 'Computer Science'),
+(5, 'Marketing'),
+(5, 'Art'),
+(5, 'Cybersecurity Engineering');
 
 INSERT INTO User_Project (user_id, project_id, role) VALUES
-(1, 1, 'Owner'),
+(6, 1, 'Owner'),
+(1, 2, 'Owner'),
+(4, 3, 'Owner'),
+(6, 4, 'Owner'),
+(2, 5, 'Owner'),
 (2, 1, 'Member'),
-(2, 2, 'Owner'),
-(3, 3, 'Owner'),
-(4, 3, 'Member'),
-(2, 4, 'Owner'),
-(5, 4, 'Member');
+(3, 2, 'Member'),
+(5, 4, 'Member'),
+(1, 5, 'Member');
 
 INSERT INTO User_Organization (user_id, organization_id, role) VALUES
 (1, 1, 'Member'),
-(2, 1, 'Member'),
-(3, 2, 'Owner'),
-(4, 2, 'Member'),
+(2, 3, 'Owner'),
+(3, 2, 'Member'),
+(4, 2, 'Owner'),
 (5, 1, 'Member'),
-(6, 1, 'Founder');
+(6, 1, 'Owner')
+ON DUPLICATE KEY UPDATE role = VALUES(role);
