@@ -1,0 +1,375 @@
+:root {
+    color-scheme: light;
+    --bg: #a9d3e8;
+    --panel: #f4fbff;
+    --panel-alt: #e4f4fb;
+    --text: #06284d;
+    --text-soft: #0f4f7e;
+    --border: #7d9db3;
+    --border-soft: #a6bfd0;
+    --accent: #0a5f90;
+    --danger: #d84343;
+    --shadow: rgba(20, 58, 88, 0.15);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+    line-height: 1.35;
+}
+
+.app-shell {
+    position: relative;
+    width: min(1200px, calc(100% - 18px));
+    margin: 12px auto 24px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    box-shadow: 0 10px 24px var(--shadow);
+}
+
+.navbar,
+.content,
+.panel,
+.table-wrap,
+.empty-state {
+    border: 2px solid #6d7884;
+}
+
+.section-label {
+    margin: 0 0 6px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    color: var(--accent);
+}
+
+h2,
+h3,
+p {
+    margin-top: 0;
+}
+
+.nav-switcher {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.nav-switcher label {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    white-space: nowrap;
+}
+
+.user-switcher {
+    display: grid;
+    gap: 8px;
+}
+
+.nav-switcher select,
+.nav-switcher button {
+    width: auto;
+    min-height: 34px;
+    padding: 6px 10px;
+}
+
+.nav-switcher select {
+    min-width: 220px;
+}
+
+.user-switcher label,
+.search-form label {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+}
+
+.user-switcher select,
+.search-form input,
+.search-form select,
+.inline-form button,
+.user-switcher button,
+button,
+a.button {
+    width: 100%;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text);
+    font: inherit;
+    padding: 10px 12px;
+    text-decoration: none;
+}
+
+.user-switcher select:focus,
+.search-form input:focus,
+.search-form select:focus,
+button:focus,
+a.button:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.navbar {
+    display: flex;
+    gap: 10px;
+    padding: 12px 18px;
+    border-width: 0 0 2px;
+    background: var(--panel-alt);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.nav-button,
+.actions a,
+.inline-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 12px;
+    color: var(--text);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    background: #fff;
+}
+
+.nav-button.active {
+    background: #1f86d6;
+    color: #fff;
+    border-color: #0f5f9b;
+}
+
+.nav-button.active:hover {
+    background: #1f86d6;
+}
+
+.content {
+    padding: 18px;
+    border-width: 0;
+}
+
+.panel,
+.table-wrap,
+.empty-state {
+    margin-bottom: 18px;
+    padding: 14px;
+    background: var(--panel);
+    color: var(--text);
+}
+
+.panel-title,
+.section-title {
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+.search-form {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 1fr 220px auto;
+    align-items: end;
+}
+
+.search-form .field {
+    display: grid;
+    gap: 6px;
+}
+
+.search-form .field.wide {
+    grid-column: span 1;
+}
+
+.search-form .actions {
+    display: flex;
+    gap: 10px;
+    align-items: end;
+}
+
+.search-form .actions button,
+.search-form .actions .button,
+.inline-form button,
+.nav-switcher button {
+    width: auto;
+    cursor: pointer;
+}
+
+.search-form .actions button,
+.search-form .actions .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 12px;
+    white-space: nowrap;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 720px;
+}
+
+th,
+td {
+    border: 1px solid rgba(18, 79, 116, 0.55);
+    padding: 10px 12px;
+    vertical-align: top;
+}
+
+th {
+    background: var(--panel-alt);
+    color: var(--text);
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.82rem;
+}
+
+tbody tr:nth-child(even) td {
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.status {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px solid var(--border);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.78rem;
+    background: #fff;
+    color: var(--text);
+}
+
+.status.open {
+    color: #0d6b42;
+}
+
+.status.closed {
+    color: var(--danger);
+}
+
+.inline-form {
+    display: inline-block;
+    margin-top: 8px;
+}
+
+.inline-form button {
+    width: auto;
+    padding: 6px 10px;
+    font-size: 0.82rem;
+}
+
+.muted {
+    color: var(--text-soft);
+}
+
+.empty-state {
+    color: var(--text);
+}
+
+.stack {
+    display: grid;
+    gap: 16px;
+}
+
+.card-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.card {
+    padding: 14px;
+    border: 2px solid var(--border);
+    background: var(--panel);
+    color: var(--text);
+}
+
+.card h3 {
+    margin-bottom: 8px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+.table-wrap table {
+    background: #fff;
+}
+
+.search-form {
+    grid-template-columns: minmax(0, 1fr) 220px auto;
+}
+
+.search-form input,
+.search-form select,
+.user-switcher select,
+.address-bar input {
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.search-form input::placeholder {
+    color: #7c8f9d;
+}
+
+.search-form .actions button,
+.inline-form button,
+.user-switcher button {
+    background: #fff;
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+a:hover,
+.search-form .actions button:hover,
+.inline-form button:hover,
+.nav-switcher button:hover,
+.nav-button:hover,
+a.button:hover {
+    background: #f2f8fb;
+}
+
+@media (max-width: 860px) {
+    .navbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .nav-switcher {
+        margin-left: 0;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .nav-switcher select,
+    .nav-switcher button {
+        width: 100%;
+    }
+
+    .search-form {
+        grid-template-columns: 1fr;
+    }
+
+    table {
+        min-width: 620px;
+    }
+}
