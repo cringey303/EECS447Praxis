@@ -1,10 +1,21 @@
 <?php
 declare(strict_types=1);
 
-$pageTitle = 'Session Profile';
+$pageTitle = 'User Profile';
 require_once __DIR__ . '/header.php';
 
 $currentUserId = (int) $currentUser['id'];
+
+// Check if viewing a specific user's profile
+$viewingUserId = (int) (filter_input(INPUT_GET, 'user_id', FILTER_VALIDATE_INT) ?? $currentUserId);
+$isOwnProfile = $viewingUserId === $currentUserId;
+
+// Fetch the user being viewed
+$viewedUser = db_fetch_one('SELECT * FROM Users WHERE id = :user_id', ['user_id' => $viewingUserId]);
+if (!$viewedUser) {
+    http_response_code(404);
+    die('User not found.');
+}
 
 $organizations = db_fetch_all(
     <<<SQL
@@ -19,7 +30,7 @@ $organizations = db_fetch_all(
     WHERE uo.user_id = :user_id
     ORDER BY o.name ASC
     SQL,
-    ['user_id' => $currentUserId]
+    ['user_id' => $viewingUserId]
 );
 
 $joinedProjects = db_fetch_all(
@@ -39,15 +50,15 @@ $joinedProjects = db_fetch_all(
     WHERE up.user_id = :user_id
     ORDER BY p.created_at DESC, p.id DESC
     SQL,
-    ['user_id' => $currentUserId]
+    ['user_id' => $viewingUserId]
 );
 ?>
 
 <section class="panel">
-    <p class="section-label">ACTIVE USER</p>
-    <h2><?php echo h($currentUser['display_name']); ?></h2>
-    <p class="muted">@<?php echo h($currentUser['handle']); ?> • <?php echo h($currentUser['email']); ?></p>
-    <p><?php echo h($currentUser['bio']); ?></p>
+    <p class="section-label"><?php echo $isOwnProfile ? 'YOUR PROFILE' : 'USER PROFILE'; ?></p>
+    <h2><?php echo h($viewedUser['display_name']); ?></h2>
+    <p class="muted">@<?php echo h($viewedUser['handle']); ?> • <?php echo h($viewedUser['email']); ?></p>
+    <p><?php echo h($viewedUser['bio']); ?></p>
 </section>
 
 <section class="stack">
@@ -105,7 +116,7 @@ $joinedProjects = db_fetch_all(
                                 <strong><?php echo h($project['title']); ?></strong><br>
                                 <span class="muted"><?php echo h($project['summary']); ?></span>
                             </td>
-                            <td><?php echo h($project['owner_name']); ?></td>
+                                <td><a href="profile.php?user_id=<?php echo (int) $project['owner_user_id']; ?>"><?php echo h($project['owner_name']); ?></a></td>
                             <td><?php echo h($project['role']); ?></td>
                             <td><span class="status <?php echo h($project['status']); ?>"><?php echo h($project['status']); ?></span></td>
                             <td>

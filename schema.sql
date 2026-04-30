@@ -71,6 +71,21 @@ CREATE TABLE User_Organization (
     CONSTRAINT fk_user_organization_organization FOREIGN KEY (organization_id) REFERENCES Organizations (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE Project_Join_Requests (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    user_id INT UNSIGNED NOT NULL,
+    project_id INT UNSIGNED NOT NULL,
+    status ENUM('pending', 'approved', 'denied') NOT NULL DEFAULT 'pending',
+    requested_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    reviewed_at TIMESTAMP NULL DEFAULT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_project_join_requests (user_id, project_id),
+    KEY idx_project_join_requests_project_id (project_id),
+    KEY idx_project_join_requests_status (status),
+    CONSTRAINT fk_project_join_requests_user FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE,
+    CONSTRAINT fk_project_join_requests_project FOREIGN KEY (project_id) REFERENCES Projects (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 INSERT INTO Users (id, handle, display_name, email, major, bio) VALUES
 (1, 'luke', 'Luke Coffman', 'luke@praxis.local', 'Computer Science', ''),
 (2, 'lucas', 'Lucas Root', 'lucas@praxis.local', 'Computer Science', "Hi, I'm Lucas, a Computer Science and Cybersecurity student @ KU."),

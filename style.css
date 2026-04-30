@@ -267,6 +267,39 @@ tbody tr:nth-child(even) td {
     color: var(--danger);
 }
 
+.success {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px solid #0d6b42;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.78rem;
+    color: #0d6b42;
+    background: #f0f8f4;
+}
+
+.pending {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px solid #8b6f47;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.78rem;
+    color: #8b6f47;
+    background: #faf8f2;
+}
+
+.error {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px solid var(--danger);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.78rem;
+    color: var(--danger);
+    background: #ffe6e6;
+}
+
 .inline-form {
     display: inline-block;
     margin-top: 8px;
@@ -372,4 +405,38 @@ a.button:hover {
     table {
         min-width: 620px;
     }
+    }
+
+    .action-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .action-row .inline-form {
+        margin-top: 0;
+    }
+
+    .action-row .inline-form button {
+        padding: 6px 10px;
+    }
+
+    .approve-btn {
+        background: #f0f8f4 !important;
+        border: 1px solid #0d6b42 !important;
+        color: #0d6b42 !important;
+    }
+
+    .approve-btn:hover {
+        background: #e0f0e8 !important;
+    }
+
+    .deny-btn {
+        background: #ffe6e6 !important;
+        border: 1px solid var(--danger) !important;
+        color: var(--danger) !important;
+    }
+
+    .deny-btn:hover {
+        background: #ffd4d4 !important;
 }

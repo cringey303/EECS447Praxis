@@ -19,11 +19,20 @@ $projects = db_fetch_all(
         p.created_at,
         p.owner_user_id,
         u.display_name AS owner_name,
-        GROUP_CONCAT(DISTINCT pdm.major ORDER BY pdm.major SEPARATOR ', ') AS desired_majors
+        GROUP_CONCAT(DISTINCT pdm.major ORDER BY pdm.major SEPARATOR ', ') AS desired_majors,
+        CASE WHEN EXISTS (
+            SELECT 1 FROM User_Project
+            WHERE user_id = :current_user_id AND project_id = p.id
+        ) THEN 1 ELSE 0 END AS is_member,
+        COALESCE((
+            SELECT status FROM Project_Join_Requests
+            WHERE user_id = :current_user_id AND project_id = p.id
+            LIMIT 1
+        ), NULL) AS join_request_status
     FROM Projects p
     JOIN Users u ON u.id = p.owner_user_id
     LEFT JOIN Project_Desired_Majors pdm ON pdm.project_id = p.id
-        WHERE (:major_filter = '' OR EXISTS (
+    WHERE (:major_filter = '' OR EXISTS (
         SELECT 1
         FROM Project_Desired_Majors filter_major
         WHERE filter_major.project_id = p.id
@@ -39,6 +48,7 @@ $projects = db_fetch_all(
     ORDER BY p.created_at DESC, p.id DESC
     SQL,
     [
+                'current_user_id' => $currentUserId,
                 'major_filter' => $majorFilter,
                 'major_lookup' => $majorFilter,
                 'search_text' => $searchText,
@@ -97,7 +107,7 @@ $projects = db_fetch_all(
                             <strong><?php echo h($project['title']); ?></strong><br>
                             <span class="muted"><?php echo h($project['summary']); ?></span>
                         </td>
-                        <td><?php echo h($project['owner_name']); ?></td>
+                        <td><a href="profile.php?user_id=<?php echo (int) $project['owner_user_id']; ?>"><?php echo h($project['owner_name']); ?></a></td>
                         <td><?php echo h($project['desired_majors'] ?? ''); ?></td>
                         <td><span class="status <?php echo h($project['status']); ?>"><?php echo h($project['status']); ?></span></td>
                         <td>
@@ -107,8 +117,24 @@ $projects = db_fetch_all(
                                     <input type="hidden" name="return_to" value="index.php">
                                     <button type="submit"><?php echo $project['status'] === 'open' ? 'Close' : 'Reopen'; ?></button>
                                 </form>
+                            <?php elseif ((int) $project['is_member'] === 1): ?>
+                                <span class="success">Member</span>
+                            <?php elseif ($project['join_request_status'] === 'pending'): ?>
+                                <span class="pending">Request pending</span>
+                            <?php elseif ($project['join_request_status'] === 'approved'): ?>
+                                <form class="inline-form" method="post" action="accept_approved_request.php">
+                                    <input type="hidden" name="project_id" value="<?php echo h((string) $project['id']); ?>">
+                                    <input type="hidden" name="return_to" value="index.php">
+                                    <button type="submit">Accept Approval</button>
+                                </form>
+                            <?php elseif ($project['join_request_status'] === 'denied'): ?>
+                                <span class="error">Request denied</span>
                             <?php else: ?>
-                                <span class="muted">Read only</span>
+                                <form class="inline-form" method="post" action="request_join.php">
+                                    <input type="hidden" name="project_id" value="<?php echo h((string) $project['id']); ?>">
+                                    <input type="hidden" name="return_to" value="index.php">
+                                    <button type="submit">Request to Join</button>
+                                </form>
                             <?php endif; ?>
                         </td>
                     </tr>
