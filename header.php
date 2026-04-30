@@ -29,9 +29,9 @@ $pageTitle = $pageTitle ?? 'Praxis';
 <body>
 <div class="app-shell">
     <nav class="navbar" aria-label="Primary">
-        <a class="nav-button <?php echo $activeTab === 'feed' ? 'active' : ''; ?>" href="index.php?tab=feed">Feed</a>
-        <a class="nav-button <?php echo $activeTab === 'profile' ? 'active' : ''; ?>" href="index.php?tab=profile">Profile</a>
-        <a class="nav-button <?php echo $activeTab === 'requests' ? 'active' : ''; ?>" href="index.php?tab=requests">Requests<?php echo $pendingRequestCount > 0 ? ' (' . h((string) $pendingRequestCount) . ')' : ''; ?></a>
+        <button class="nav-button <?php echo $activeTab === 'feed' ? 'active' : ''; ?>" data-tab="feed">Feed</button>
+        <button class="nav-button <?php echo $activeTab === 'profile' ? 'active' : ''; ?>" data-tab="profile">Profile</button>
+        <button class="nav-button <?php echo $activeTab === 'requests' ? 'active' : ''; ?>" data-tab="requests">Requests<?php echo $pendingRequestCount > 0 ? ' (' . h((string) $pendingRequestCount) . ')' : ''; ?></button>
         <form class="nav-switcher" method="get" action="index.php" id="user-switch-form">
             <input type="hidden" name="switch_user" value="1">
             <input type="hidden" name="tab" id="switch-tab" value="<?php echo h($activeTab); ?>">
@@ -48,6 +48,42 @@ $pageTitle = $pageTitle ?? 'Praxis';
     <main class="content">
 <script>
 (() => {
+    // Tab switching
+    const tabButtons = document.querySelectorAll('[data-tab]');
+    const tabPanels = document.querySelectorAll('[data-tab-panel]');
+    
+    const switchTab = (tabName) => {
+        // Update URL without reload
+        const url = new URL(window.location);
+        url.searchParams.set('tab', tabName);
+        window.history.pushState({}, '', url);
+        
+        // Hide all panels and deactivate all buttons
+        tabPanels.forEach(panel => panel.classList.add('is-hidden'));
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        
+        // Show active panel and activate button
+        const activePanel = document.querySelector(`[data-tab-panel="${tabName}"]`);
+        const activeButton = document.querySelector(`[data-tab="${tabName}"]`);
+        if (activePanel) activePanel.classList.remove('is-hidden');
+        if (activeButton) activeButton.classList.add('active');
+    };
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchTab(button.dataset.tab);
+        });
+    });
+    
+    // Handle back/forward buttons
+    window.addEventListener('popstate', () => {
+        const url = new URL(window.location);
+        const tab = url.searchParams.get('tab') || 'feed';
+        switchTab(tab);
+    });
+
+    // User switching
     const switchForm = document.getElementById('user-switch-form');
     const switchUser = document.getElementById('user_id');
     if (!switchForm || !switchUser) {

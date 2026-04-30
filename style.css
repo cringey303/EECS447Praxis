@@ -146,6 +146,8 @@ a.button:focus {
     text-decoration: none;
     border: 1px solid var(--border);
     background: #fff;
+    cursor: pointer;
+    font: inherit;
 }
 
 .nav-button.active {
