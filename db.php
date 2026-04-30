@@ -82,9 +82,17 @@ function h(string $value): string
 
 function set_current_user_from_request(): void
 {
-    $incomingUserId = filter_input(INPUT_GET, 'user_id', FILTER_VALIDATE_INT);
+    $switchIntentGet = filter_input(INPUT_GET, 'switch_user', FILTER_VALIDATE_INT);
+    $switchIntentPost = filter_input(INPUT_POST, 'switch_user', FILTER_VALIDATE_INT);
+    $isSwitchRequest = $switchIntentGet === 1 || $switchIntentPost === 1;
+
+    if (!$isSwitchRequest) {
+        return;
+    }
+
+    $incomingUserId = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
     if ($incomingUserId === null || $incomingUserId === false) {
-        $incomingUserId = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
+        $incomingUserId = filter_input(INPUT_GET, 'user_id', FILTER_VALIDATE_INT);
     }
 
     if ($incomingUserId === null || $incomingUserId === false) {
