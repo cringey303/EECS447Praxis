@@ -65,6 +65,11 @@ $projects = db_fetch_all(
                 OR p.title LIKE :search_like_1
                 OR p.summary LIKE :search_like_2
                 OR u.display_name LIKE :search_like_3
+                OR EXISTS (
+                    SELECT 1 FROM Project_Desired_Majors pdm_search
+                    WHERE pdm_search.project_id = p.id
+                    AND pdm_search.major LIKE :search_like_majors
+                )
     )
     GROUP BY p.id, p.title, p.summary, p.status, p.created_at, p.owner_user_id, u.display_name
     ORDER BY p.created_at DESC, p.id DESC
@@ -78,6 +83,7 @@ $projects = db_fetch_all(
                 'search_like_1' => '%' . $searchText . '%',
                 'search_like_2' => '%' . $searchText . '%',
                 'search_like_3' => '%' . $searchText . '%',
+                'search_like_majors' => '%' . $searchText . '%',
     ]
 );
 
