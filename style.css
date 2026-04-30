@@ -405,38 +405,42 @@ a.button:hover {
     table {
         min-width: 620px;
     }
-    }
+}
 
-    .action-row {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-    }
+.app-section.is-hidden {
+    display: none;
+}
 
-    .action-row .inline-form {
-        margin-top: 0;
-    }
+.action-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
 
-    .action-row .inline-form button {
-        padding: 6px 10px;
-    }
+.action-row .inline-form {
+    margin-top: 0;
+}
 
-    .approve-btn {
-        background: #f0f8f4 !important;
-        border: 1px solid #0d6b42 !important;
-        color: #0d6b42 !important;
-    }
+.action-row .inline-form button {
+    padding: 6px 10px;
+}
 
-    .approve-btn:hover {
-        background: #e0f0e8 !important;
-    }
+.approve-btn {
+    background: #f0f8f4 !important;
+    border: 1px solid #0d6b42 !important;
+    color: #0d6b42 !important;
+}
 
-    .deny-btn {
-        background: #ffe6e6 !important;
-        border: 1px solid var(--danger) !important;
-        color: var(--danger) !important;
-    }
+.approve-btn:hover {
+    background: #e0f0e8 !important;
+}
 
-    .deny-btn:hover {
-        background: #ffd4d4 !important;
+.deny-btn {
+    background: #ffe6e6 !important;
+    border: 1px solid var(--danger) !important;
+    color: var(--danger) !important;
+}
+
+.deny-btn:hover {
+    background: #ffd4d4 !important;
 }

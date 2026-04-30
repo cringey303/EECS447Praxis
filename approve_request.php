@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $requestId = (int) (filter_input(INPUT_POST, 'request_id', FILTER_VALIDATE_INT) ?? 0);
+$returnTo = (string) (filter_input(INPUT_POST, 'return_to', FILTER_UNSAFE_RAW) ?? 'index.php?tab=requests');
 
 // Fetch the join request
 $joinRequest = db_fetch_one(
@@ -39,4 +40,4 @@ db_execute(
     ['id' => $requestId, 'status' => 'approved']
 );
 
-header('Location: pending_requests.php');
+header('Location: ' . $returnTo);
