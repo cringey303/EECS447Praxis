@@ -270,7 +270,6 @@ if ($isPartial && $partialMode === '1') {
                 </select>
             </div>
             <div class="actions">
-                <button type="submit">Filter</button>
                 <a class="button" href="index.php?tab=feed">Reset</a>
             </div>
         </form>
