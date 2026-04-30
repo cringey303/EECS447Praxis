@@ -120,6 +120,8 @@ function render_project_rows(array $projects, int $currentUserId): void
             echo '</form>';
         } elseif ($project['join_request_status'] === 'denied') {
             echo '<span class="error">Request denied</span>';
+        } elseif ($project['status'] === 'closed') {
+            echo '<span class="muted">Closed</span>';
         } else {
             echo '<form class="inline-form" method="post" action="request_join.php">';
             echo '<input type="hidden" name="project_id" value="' . h((string) $project['id']) . '">';
@@ -298,10 +300,6 @@ if ($isPartial && $partialMode === '1') {
 </section>
 
 <section class="app-section<?php echo $activeTab === 'requests' ? '' : ' is-hidden'; ?>" data-tab-panel="requests">
-    <section class="panel">
-        <p class="section-label">JOIN REQUESTS</p>
-        <p>You have pending join requests for your projects below.</p>
-    </section>
     <section class="table-wrap">
         <table>
             <thead>

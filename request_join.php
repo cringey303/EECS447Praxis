@@ -14,11 +14,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $projectId = (int) (filter_input(INPUT_POST, 'project_id', FILTER_VALIDATE_INT) ?? 0);
 $returnTo = (string) (filter_input(INPUT_POST, 'return_to', FILTER_UNSAFE_RAW) ?? 'index.php');
 
-// Validate project exists
-$project = db_fetch_one('SELECT id FROM Projects WHERE id = :id', ['id' => $projectId]);
+// Validate project exists and is open
+$project = db_fetch_one('SELECT id, status FROM Projects WHERE id = :id', ['id' => $projectId]);
 if (!$project) {
     http_response_code(404);
     die('Project not found.');
+}
+
+if ($project['status'] === 'closed') {
+    http_response_code(403);
+    die('Cannot join a closed project.');
 }
 
 // Check if already a member
