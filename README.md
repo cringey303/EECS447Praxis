@@ -27,4 +27,4 @@ Praxis is a student project feed where users can browse projects, filter them by
 
 1. Import `schema.sql` into a local MySQL database named `praxis`.
 2. Set the `PRAXIS_DB_*` environment variables if your local MySQL login differs from the defaults in `db.php`.
-3. Run PHP from the project root and open the app in your browser.
+3. Run `php -S 127.0.0.1:8000` from the project root and open the app in your browser.
