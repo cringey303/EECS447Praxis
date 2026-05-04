@@ -101,8 +101,8 @@ INSERT INTO Organizations (id, name, description) VALUES
 
 INSERT INTO Projects (id, owner_user_id, title, summary, status) VALUES
 (1, 6, 'Facebook', 'The Facebook project.', 'open'),
-(2, 1, 'Order Dashboard', 'A dashboard for managing orders.', 'open'),
-(3, 4, 'New Menu Items', 'Developing new menu items for the restaurant.', 'open'),
+(2, 1, 'PencilIn Calendar Assistant', 'A calendar assistant for managing schedules.', 'open'),
+(3, 4, "Bob's Burgers", 'A local burger joint.', 'open'),
 (4, 6, 'Security Audit', 'Conducting a security audit of our systems.', 'open'),
 (5, 2, 'Praxis Platform', 'Building the Praxis platform for connecting students with projects.', 'open');
 

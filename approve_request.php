@@ -34,10 +34,35 @@ if (!$project || (int) $project['owner_user_id'] !== $currentUserId) {
     die('Unauthorized.');
 }
 
-// Update request status to approved
-db_execute(
-    'UPDATE Project_Join_Requests SET status = :status, reviewed_at = CURRENT_TIMESTAMP WHERE id = :id',
-    ['id' => $requestId, 'status' => 'approved']
-);
+// Approve the request and add the requester to the project immediately.
+$pdo = db();
+
+try {
+    $pdo->beginTransaction();
+
+    db_execute(
+        'UPDATE Project_Join_Requests SET status = :status, reviewed_at = CURRENT_TIMESTAMP WHERE id = :id',
+        ['id' => $requestId, 'status' => 'approved']
+    );
+
+    db_execute(
+        'INSERT INTO User_Project (user_id, project_id, role) VALUES (:user_id, :project_id, :role) ON DUPLICATE KEY UPDATE role = VALUES(role)',
+        [
+            'user_id' => $joinRequest['user_id'],
+            'project_id' => $joinRequest['project_id'],
+            'role' => 'Member',
+        ]
+    );
+
+    $pdo->commit();
+} catch (Throwable $exception) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+
+    error_log('Error approving join request: ' . $exception->getMessage());
+    http_response_code(500);
+    die('Error approving join request.');
+}
 
 header('Location: ' . $returnTo);

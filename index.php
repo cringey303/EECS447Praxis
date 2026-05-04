@@ -112,12 +112,6 @@ function render_project_rows(array $projects, int $currentUserId): void
             echo '<span class="success">Member</span>';
         } elseif ($project['join_request_status'] === 'pending') {
             echo '<span class="pending">Request pending</span>';
-        } elseif ($project['join_request_status'] === 'approved') {
-            echo '<form class="inline-form" method="post" action="accept_approved_request.php">';
-            echo '<input type="hidden" name="project_id" value="' . h((string) $project['id']) . '">';
-            echo '<input type="hidden" name="return_to" value="index.php?tab=feed">';
-            echo '<button type="submit">Accept Approval</button>';
-            echo '</form>';
         } elseif ($project['join_request_status'] === 'denied') {
             echo '<span class="error">Request denied</span>';
         } elseif ($project['status'] === 'closed') {
