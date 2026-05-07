@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Praxis Demo</title>
+    <title>Praxis</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .demo-banner {
@@ -117,25 +117,6 @@
     </nav>
 
     <main class="content">
-        <section class="demo-banner panel">
-            <strong>Static Demo</strong>
-            This is a GitHub Pages-friendly mock of the Praxis app. It uses in-browser sample data and localStorage, so the link works without PHP or MySQL.
-            <div class="toolbar">
-                <span class="chip">Live link ready</span>
-                <span class="chip">Fake database</span>
-                <span class="chip">No backend required</span>
-            </div>
-        </section>
-
-        <section class="panel">
-            <div class="hero-grid">
-                <div class="hero-stat"><strong id="stat-projects">0</strong><span class="muted">Projects in the feed</span></div>
-                <div class="hero-stat"><strong id="stat-memberships">0</strong><span class="muted">Memberships for current user</span></div>
-                <div class="hero-stat"><strong id="stat-requests">0</strong><span class="muted">Pending requests for owners</span></div>
-            </div>
-            <p class="state-note muted" id="current-user-summary"></p>
-        </section>
-
         <section class="app-section" data-tab-panel="feed">
             <section class="panel">
                 <p class="section-label">FILTERS</p>
@@ -228,7 +209,6 @@
             </section>
         </section>
 
-        <p class="footer-note">Tip: this demo persists to your browser only, so you can click around and still keep the fake state after refresh.</p>
     </main>
 </div>
 
@@ -313,10 +293,6 @@ const els = {
     profileProjectsBody: document.getElementById('profile-projects-body'),
     requestsBody: document.getElementById('requests-table-body'),
     requestsSummary: document.getElementById('requests-summary'),
-    currentUserSummary: document.getElementById('current-user-summary'),
-    statProjects: document.getElementById('stat-projects'),
-    statMemberships: document.getElementById('stat-memberships'),
-    statRequests: document.getElementById('stat-requests'),
 };
 
 function loadState() {
@@ -410,13 +386,7 @@ function renderFilters() {
 }
 
 function renderSummary() {
-    const user = currentUser();
-    const membershipCount = state.memberships.filter(row => row.user_id === state.currentUserId).length;
-    const pendingRequestCount = state.requests.filter(row => row.status === 'pending' && projectById(row.project_id)?.owner_user_id === state.currentUserId).length;
-    els.statProjects.textContent = String(state.projects.length);
-    els.statMemberships.textContent = String(membershipCount);
-    els.statRequests.textContent = String(pendingRequestCount);
-    els.currentUserSummary.textContent = `Viewing as ${user.display_name} (@${user.handle}) • ${user.major}`;
+    return;
 }
 
 function renderFeed() {
