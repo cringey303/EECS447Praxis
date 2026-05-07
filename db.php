@@ -23,11 +23,11 @@ function db_config(): array
     }
 
     return [
-        'host' => getenv('PRAXIS_DB_HOST') ?: getenv('MYSQLHOST') ?: getenv('MYSQL_HOST') ?: '127.0.0.1',
-        'port' => getenv('PRAXIS_DB_PORT') ?: getenv('MYSQLPORT') ?: getenv('MYSQL_PORT') ?: '3306',
-        'name' => getenv('PRAXIS_DB_NAME') ?: getenv('MYSQL_DATABASE') ?: getenv('MYSQL_DB') ?: 'praxis',
-        'user' => getenv('PRAXIS_DB_USER') ?: getenv('MYSQLUSER') ?: getenv('MYSQL_USER') ?: 'root',
-        'pass' => getenv('PRAXIS_DB_PASS') ?: getenv('MYSQLPASSWORD') ?: getenv('MYSQL_ROOT_PASSWORD') ?: getenv('MYSQL_PASS') ?: '',
+        'host' => getenv('MYSQLHOST') ?: getenv('MYSQL_HOST') ?: getenv('PRAXIS_DB_HOST') ?: '127.0.0.1',
+        'port' => getenv('MYSQLPORT') ?: getenv('MYSQL_PORT') ?: getenv('PRAXIS_DB_PORT') ?: '3306',
+        'name' => getenv('MYSQLDATABASE') ?: getenv('MYSQL_DATABASE') ?: getenv('MYSQL_DB') ?: getenv('PRAXIS_DB_NAME') ?: 'praxis',
+        'user' => getenv('MYSQLUSER') ?: getenv('MYSQL_USER') ?: getenv('PRAXIS_DB_USER') ?: 'root',
+        'pass' => getenv('MYSQLPASSWORD') ?: getenv('MYSQL_ROOT_PASSWORD') ?: getenv('MYSQL_PASS') ?: getenv('PRAXIS_DB_PASS') ?: '',
     ];
 }
 
