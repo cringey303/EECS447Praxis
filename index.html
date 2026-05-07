@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Praxis Demo</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .demo-banner {
+            margin-bottom: 18px;
+            padding: 14px 16px;
+            border: 2px solid #b07d2c;
+            background: linear-gradient(135deg, #fff8e8, #fffdf8);
+            color: #6b4a10;
+        }
+
+        .demo-banner strong {
+            display: block;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.78rem;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .toolbar .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: var(--text);
+            text-decoration: none;
+            font: inherit;
+        }
+
+        .hero-grid {
+            display: grid;
+            gap: 14px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+
+        .hero-stat {
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.65);
+        }
+
+        .hero-stat strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 1.35rem;
+        }
+
+        .search-form .actions button,
+        .search-form .actions .button {
+            min-height: 38px;
+        }
+
+        .state-note {
+            margin-top: 8px;
+            font-size: 0.92rem;
+        }
+
+        .small-label {
+            margin: 0 0 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.74rem;
+            color: var(--text-soft);
+        }
+
+        .toggle-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 34px;
+            padding: 0 12px;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .toggle-link.active {
+            background: #1f86d6;
+            color: #fff;
+            border-color: #0f5f9b;
+        }
+
+        .footer-note {
+            margin-top: 18px;
+            color: var(--text-soft);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+<div class="app-shell">
+    <nav class="navbar" aria-label="Primary">
+        <a class="nav-button active" href="#feed" data-tab="feed">Feed</a>
+        <a class="nav-button" href="#profile" data-tab="profile">Profile</a>
+        <a class="nav-button" href="#requests" data-tab="requests">Requests</a>
+        <form class="nav-switcher" id="user-switch-form">
+            <input type="hidden" name="switch_user" value="1">
+            <label for="user_id">Switch user</label>
+            <select id="user_id" name="user_id"></select>
+        </form>
+    </nav>
+
+    <main class="content">
+        <section class="demo-banner panel">
+            <strong>Static Demo</strong>
+            This is a GitHub Pages-friendly mock of the Praxis app. It uses in-browser sample data and localStorage, so the link works without PHP or MySQL.
+            <div class="toolbar">
+                <span class="chip">Live link ready</span>
+                <span class="chip">Fake database</span>
+                <span class="chip">No backend required</span>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="hero-grid">
+                <div class="hero-stat"><strong id="stat-projects">0</strong><span class="muted">Projects in the feed</span></div>
+                <div class="hero-stat"><strong id="stat-memberships">0</strong><span class="muted">Memberships for current user</span></div>
+                <div class="hero-stat"><strong id="stat-requests">0</strong><span class="muted">Pending requests for owners</span></div>
+            </div>
+            <p class="state-note muted" id="current-user-summary"></p>
+        </section>
+
+        <section class="app-section" data-tab-panel="feed">
+            <section class="panel">
+                <p class="section-label">FILTERS</p>
+                <form class="search-form" id="project-search-form">
+                    <div class="field wide">
+                        <label for="q">Search text</label>
+                        <input id="q" name="q" type="text" placeholder="Project title, description, or owner">
+                    </div>
+                    <div class="field">
+                        <label for="major">Desired major</label>
+                        <select id="major" name="major"></select>
+                    </div>
+                    <div class="actions">
+                        <button type="submit">Apply</button>
+                        <button type="button" id="clear-filters">Reset</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>Owner</th>
+                            <th>Desired Majors</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="feed-table-body"></tbody>
+                </table>
+            </section>
+        </section>
+
+        <section class="app-section is-hidden" data-tab-panel="profile">
+            <section class="panel" id="profile-card"></section>
+            <section class="stack">
+                <div class="table-wrap">
+                    <h2 class="section-title">Organizations</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Joined</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="profile-orgs-body"></tbody>
+                    </table>
+                </div>
+
+                <div class="table-wrap">
+                    <h2 class="section-title">Joined Projects</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Owner</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="profile-projects-body"></tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+
+        <section class="app-section is-hidden" data-tab-panel="requests">
+            <section class="panel">
+                <p class="section-label">JOIN REQUESTS</p>
+                <p id="requests-summary"></p>
+            </section>
+
+            <section class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>Requester</th>
+                            <th>Requested</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="requests-table-body"></tbody>
+                </table>
+            </section>
+        </section>
+
+        <p class="footer-note">Tip: this demo persists to your browser only, so you can click around and still keep the fake state after refresh.</p>
+    </main>
+</div>
+
+<script>
+const STORAGE_KEY = 'praxis-static-demo-v1';
+
+const users = [
+    { id: 1, handle: 'luke', display_name: 'Luke Coffman', email: 'luke@praxis.local', major: 'Computer Science', bio: '' },
+    { id: 2, handle: 'lucas', display_name: 'Lucas Root', email: 'lucas@praxis.local', major: 'Computer Science', bio: 'Hi, I\'m Lucas, a Computer Science and Cybersecurity student @ KU.' },
+    { id: 3, handle: 'alice', display_name: 'Alice Smith', email: 'alice@praxis.local', major: 'Marketing', bio: 'Marketing enthusiast with a passion for creative campaigns.' },
+    { id: 4, handle: 'bob', display_name: 'Bob Johnson', email: 'bob@praxis.local', major: 'Art', bio: 'Contemporary artist. Works with digital media and interactive installations.' },
+    { id: 5, handle: 'carol', display_name: 'Carol Davis', email: 'carol@praxis.local', major: 'Cybersecurity Engineering', bio: 'Protect the digital frontier.' },
+    { id: 6, handle: 'mark', display_name: 'Mark Zuckerberg', email: 'mark@praxis.local', major: 'Computer Science', bio: 'Co-founder and CEO of Facebook.' },
+];
+
+const organizations = [
+    { id: 1, name: 'Microsoft', description: 'Software, services, and tools for developers and businesses.' },
+    { id: 2, name: 'Bob\'s Burgers', description: 'A local burger joint.' },
+    { id: 3, name: 'University of Kansas', description: 'Located in Lawrence, Kansas.' },
+];
+
+const initialProjects = [
+    { id: 1, owner_user_id: 6, title: 'Facebook', summary: 'The Facebook project.', status: 'open', majors: ['Computer Science'] },
+    { id: 2, owner_user_id: 1, title: 'Order Dashboard', summary: 'A dashboard for managing orders.', status: 'open', majors: ['Computer Science'] },
+    { id: 3, owner_user_id: 4, title: 'New Menu Items', summary: 'Developing new menu items for the restaurant.', status: 'open', majors: ['Marketing'] },
+    { id: 4, owner_user_id: 6, title: 'Security Audit', summary: 'Conducting a security audit of our systems.', status: 'open', majors: ['Computer Science', 'Cybersecurity Engineering'] },
+    { id: 5, owner_user_id: 2, title: 'Praxis Platform', summary: 'Building the Praxis platform for connecting students with projects.', status: 'open', majors: ['Computer Science', 'Marketing', 'Art', 'Cybersecurity Engineering'] },
+];
+
+const initialMemberships = [
+    { user_id: 6, project_id: 1, role: 'Owner' },
+    { user_id: 1, project_id: 2, role: 'Owner' },
+    { user_id: 4, project_id: 3, role: 'Owner' },
+    { user_id: 6, project_id: 4, role: 'Owner' },
+    { user_id: 2, project_id: 5, role: 'Owner' },
+    { user_id: 2, project_id: 1, role: 'Member' },
+    { user_id: 3, project_id: 2, role: 'Member' },
+    { user_id: 5, project_id: 4, role: 'Member' },
+    { user_id: 1, project_id: 5, role: 'Member' },
+];
+
+const initialOrgMemberships = [
+    { user_id: 1, organization_id: 1, role: 'Member', joined_at: '2026-02-17' },
+    { user_id: 2, organization_id: 3, role: 'Owner', joined_at: '2026-02-10' },
+    { user_id: 3, organization_id: 2, role: 'Member', joined_at: '2026-03-03' },
+    { user_id: 4, organization_id: 2, role: 'Owner', joined_at: '2026-01-28' },
+    { user_id: 5, organization_id: 1, role: 'Member', joined_at: '2026-02-19' },
+    { user_id: 6, organization_id: 1, role: 'Owner', joined_at: '2026-02-02' },
+];
+
+const initialRequests = [
+    { id: 1, user_id: 2, project_id: 1, status: 'approved', requested_at: '2026-03-01', reviewed_at: '2026-03-02' },
+    { id: 2, user_id: 3, project_id: 2, status: 'approved', requested_at: '2026-03-04', reviewed_at: '2026-03-05' },
+    { id: 3, user_id: 5, project_id: 4, status: 'pending', requested_at: '2026-04-01', reviewed_at: null },
+    { id: 4, user_id: 1, project_id: 5, status: 'approved', requested_at: '2026-03-10', reviewed_at: '2026-03-10' },
+];
+
+const defaultState = {
+    currentUserId: 2,
+    projects: initialProjects,
+    memberships: initialMemberships,
+    orgMemberships: initialOrgMemberships,
+    requests: initialRequests,
+    ui: {
+        tab: 'feed',
+        q: '',
+        major: '',
+    },
+};
+
+const state = loadState();
+
+const els = {
+    userSelect: document.getElementById('user_id'),
+    q: document.getElementById('q'),
+    major: document.getElementById('major'),
+    searchForm: document.getElementById('project-search-form'),
+    clearFilters: document.getElementById('clear-filters'),
+    feedBody: document.getElementById('feed-table-body'),
+    profileCard: document.getElementById('profile-card'),
+    profileOrgsBody: document.getElementById('profile-orgs-body'),
+    profileProjectsBody: document.getElementById('profile-projects-body'),
+    requestsBody: document.getElementById('requests-table-body'),
+    requestsSummary: document.getElementById('requests-summary'),
+    currentUserSummary: document.getElementById('current-user-summary'),
+    statProjects: document.getElementById('stat-projects'),
+    statMemberships: document.getElementById('stat-memberships'),
+    statRequests: document.getElementById('stat-requests'),
+};
+
+function loadState() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+        return structuredClone(defaultState);
+    }
+
+    try {
+        const parsed = JSON.parse(raw);
+        return {
+            ...structuredClone(defaultState),
+            ...parsed,
+            ui: { ...defaultState.ui, ...(parsed.ui || {}) },
+            projects: parsed.projects || structuredClone(defaultState.projects),
+            memberships: parsed.memberships || structuredClone(defaultState.memberships),
+            orgMemberships: parsed.orgMemberships || structuredClone(defaultState.orgMemberships),
+            requests: parsed.requests || structuredClone(defaultState.requests),
+        };
+    } catch {
+        return structuredClone(defaultState);
+    }
+}
+
+function saveState() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function userById(id) {
+    return users.find(user => user.id === id);
+}
+
+function projectById(id) {
+    return state.projects.find(project => project.id === id);
+}
+
+function currentUser() {
+    return userById(state.currentUserId);
+}
+
+function majorOptions() {
+    return ['', 'Computer Science', 'Marketing', 'Art', 'Cybersecurity Engineering'];
+}
+
+function currentProjectStatus(projectId) {
+    const project = projectById(projectId);
+    return project ? project.status : 'open';
+}
+
+function membershipRole(userId, projectId) {
+    const membership = state.memberships.find(row => row.user_id === userId && row.project_id === projectId);
+    return membership ? membership.role : null;
+}
+
+function requestFor(userId, projectId) {
+    return state.requests.find(row => row.user_id === userId && row.project_id === projectId) || null;
+}
+
+function isMember(userId, projectId) {
+    return membershipRole(userId, projectId) !== null;
+}
+
+function requestStatusLabel(request) {
+    if (!request) return null;
+    return request.status;
+}
+
+function renderTabs() {
+    const active = state.ui.tab;
+    document.querySelectorAll('[data-tab]').forEach(button => {
+        button.classList.toggle('active', button.dataset.tab === active);
+    });
+    document.querySelectorAll('[data-tab-panel]').forEach(panel => {
+        panel.classList.toggle('is-hidden', panel.dataset.tabPanel !== active);
+    });
+}
+
+function renderSwitcher() {
+    els.userSelect.innerHTML = users.map(user => `<option value="${user.id}">${user.display_name}</option>`).join('');
+    els.userSelect.value = String(state.currentUserId);
+}
+
+function renderFilters() {
+    els.q.value = state.ui.q;
+    els.major.innerHTML = majorOptions().map(value => {
+        const label = value === '' ? 'All majors' : value;
+        const selected = value === state.ui.major ? ' selected' : '';
+        return `<option value="${escapeHtml(value)}"${selected}>${escapeHtml(label)}</option>`;
+    }).join('');
+    els.major.value = state.ui.major;
+}
+
+function renderSummary() {
+    const user = currentUser();
+    const membershipCount = state.memberships.filter(row => row.user_id === state.currentUserId).length;
+    const pendingRequestCount = state.requests.filter(row => row.status === 'pending' && projectById(row.project_id)?.owner_user_id === state.currentUserId).length;
+    els.statProjects.textContent = String(state.projects.length);
+    els.statMemberships.textContent = String(membershipCount);
+    els.statRequests.textContent = String(pendingRequestCount);
+    els.currentUserSummary.textContent = `Viewing as ${user.display_name} (@${user.handle}) • ${user.major}`;
+}
+
+function renderFeed() {
+    const rows = state.projects
+        .filter(project => {
+            const matchesMajor = state.ui.major === '' || project.majors.includes(state.ui.major);
+            const needle = state.ui.q.trim().toLowerCase();
+            const haystack = [project.title, project.summary, userById(project.owner_user_id)?.display_name || '', project.majors.join(' ')].join(' ').toLowerCase();
+            const matchesSearch = needle === '' || haystack.includes(needle);
+            return matchesMajor && matchesSearch;
+        })
+        .sort((a, b) => b.id - a.id)
+        .map(project => {
+            const owner = userById(project.owner_user_id);
+            const request = requestFor(state.currentUserId, project.id);
+            const member = isMember(state.currentUserId, project.id);
+            let action = '';
+
+            if (project.owner_user_id === state.currentUserId) {
+                action = `<button data-action="toggle-status" data-project-id="${project.id}">${project.status === 'open' ? 'Close' : 'Reopen'}</button>`;
+            } else if (member) {
+                action = '<span class="success">Member</span>';
+            } else if (request?.status === 'pending') {
+                action = '<span class="pending">Request pending</span>';
+            } else if (request?.status === 'denied') {
+                action = '<span class="error">Request denied</span>';
+            } else if (project.status === 'closed') {
+                action = '<span class="muted">Closed</span>';
+            } else {
+                action = `<button data-action="request" data-project-id="${project.id}">Request</button>`;
+            }
+
+            return `
+                <tr>
+                    <td><strong>${escapeHtml(project.title)}</strong><br><span class="muted">${escapeHtml(project.summary)}</span></td>
+                    <td><a href="#profile" data-tab-jump="profile" data-user-id="${owner?.id || ''}">${escapeHtml(owner?.display_name || 'Unknown')}</a></td>
+                    <td>${escapeHtml(project.majors.join(', '))}</td>
+                    <td><span class="status ${escapeHtml(project.status)}">${escapeHtml(project.status)}</span></td>
+                    <td>${action}</td>
+                </tr>`;
+        });
+
+    els.feedBody.innerHTML = rows.length ? rows.join('') : '<tr><td colspan="5" class="empty-state">No projects matched the current filters.</td></tr>';
+}
+
+function renderProfile() {
+    const user = currentUser();
+    const orgRows = state.orgMemberships
+        .filter(row => row.user_id === user.id)
+        .map(row => {
+            const org = organizations.find(item => item.id === row.organization_id);
+            return `<tr><td>${escapeHtml(org?.name || 'Unknown')}</td><td>${escapeHtml(row.role)}</td><td>${escapeHtml(row.joined_at)}</td><td>${escapeHtml(org?.description || '')}</td></tr>`;
+        });
+
+    const projectRows = state.memberships
+        .filter(row => row.user_id === user.id)
+        .map(row => {
+            const project = projectById(row.project_id);
+            const owner = userById(project?.owner_user_id || 0);
+            const action = project?.owner_user_id === user.id
+                ? `<button data-action="toggle-status" data-project-id="${project.id}">${project.status === 'open' ? 'Close' : 'Reopen'}</button>`
+                : '<span class="muted">Read only</span>';
+
+            return `
+                <tr>
+                    <td><strong>${escapeHtml(project?.title || '')}</strong><br><span class="muted">${escapeHtml(project?.summary || '')}</span></td>
+                    <td><a href="#profile" data-tab-jump="profile" data-user-id="${owner?.id || ''}">${escapeHtml(owner?.display_name || '')}</a></td>
+                    <td>${escapeHtml(row.role)}</td>
+                    <td><span class="status ${escapeHtml(project?.status || 'open')}">${escapeHtml(project?.status || 'open')}</span></td>
+                    <td>${action}</td>
+                </tr>`;
+        });
+
+    els.profileCard.innerHTML = `
+        <p class="section-label">YOUR PROFILE</p>
+        <h2>${escapeHtml(user.display_name)}</h2>
+        <p class="muted">@${escapeHtml(user.handle)} • ${escapeHtml(user.email)}</p>
+        <p>${escapeHtml(user.bio || 'No bio provided.')}</p>`;
+
+    els.profileOrgsBody.innerHTML = orgRows.length ? orgRows.join('') : '<tr><td colspan="4" class="empty-state">This user is not linked to any organizations.</td></tr>';
+    els.profileProjectsBody.innerHTML = projectRows.length ? projectRows.join('') : '<tr><td colspan="5" class="empty-state">This user has not joined any projects.</td></tr>';
+}
+
+function renderRequests() {
+    const ownedProjectIds = state.projects.filter(project => project.owner_user_id === state.currentUserId).map(project => project.id);
+    const pending = state.requests
+        .filter(request => request.status === 'pending' && ownedProjectIds.includes(request.project_id))
+        .sort((a, b) => new Date(b.requested_at) - new Date(a.requested_at));
+
+    els.requestsSummary.textContent = `You have ${new Set(pending.map(item => item.project_id)).size} project(s) with pending join request(s).`;
+    els.requestsBody.innerHTML = pending.length ? pending.map(request => {
+        const requester = userById(request.user_id);
+        const project = projectById(request.project_id);
+        return `
+            <tr>
+                <td><strong>${escapeHtml(project?.title || '')}</strong></td>
+                <td><a href="#profile" data-tab-jump="profile" data-user-id="${requester?.id || ''}">${escapeHtml(requester?.display_name || '')} (@${escapeHtml(requester?.handle || '')})</a></td>
+                <td>${escapeHtml(request.requested_at)}</td>
+                <td>
+                    <div class="action-row">
+                        <button class="approve-btn" data-action="approve" data-request-id="${request.id}">Approve</button>
+                        <button class="deny-btn" data-action="deny" data-request-id="${request.id}">Deny</button>
+                    </div>
+                </td>
+            </tr>`;
+    }).join('') : '<tr><td colspan="4" class="empty-state">No pending join requests.</td></tr>';
+}
+
+function renderAll() {
+    renderSwitcher();
+    renderFilters();
+    renderSummary();
+    renderTabs();
+    renderFeed();
+    renderProfile();
+    renderRequests();
+    saveState();
+}
+
+function setTab(tab) {
+    state.ui.tab = tab;
+    history.replaceState({}, '', `#${tab}`);
+    renderAll();
+}
+
+function handleRequest(projectId) {
+    const existing = requestFor(state.currentUserId, projectId);
+    if (existing && existing.status === 'approved') return;
+    if (existing) {
+        existing.status = 'pending';
+        existing.requested_at = new Date().toISOString().slice(0, 10);
+        existing.reviewed_at = null;
+    } else {
+        state.requests.push({ id: nextId(state.requests), user_id: state.currentUserId, project_id: projectId, status: 'pending', requested_at: new Date().toISOString().slice(0, 10), reviewed_at: null });
+    }
+    renderAll();
+}
+
+function handleApprove(requestId) {
+    const request = state.requests.find(item => item.id === requestId);
+    if (!request) return;
+    request.status = 'approved';
+    request.reviewed_at = new Date().toISOString().slice(0, 10);
+    if (!isMember(request.user_id, request.project_id)) {
+        state.memberships.push({ user_id: request.user_id, project_id: request.project_id, role: 'Member' });
+    }
+    renderAll();
+}
+
+function handleDeny(requestId) {
+    const request = state.requests.find(item => item.id === requestId);
+    if (!request) return;
+    request.status = 'denied';
+    request.reviewed_at = new Date().toISOString().slice(0, 10);
+    renderAll();
+}
+
+function handleToggleStatus(projectId) {
+    const project = projectById(projectId);
+    if (!project || project.owner_user_id !== state.currentUserId) return;
+    project.status = project.status === 'open' ? 'closed' : 'open';
+    renderAll();
+}
+
+function nextId(rows) {
+    return rows.length ? Math.max(...rows.map(row => row.id)) + 1 : 1;
+}
+
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+}
+
+document.addEventListener('click', event => {
+    const tabLink = event.target.closest('[data-tab]');
+    if (tabLink) {
+        event.preventDefault();
+        setTab(tabLink.dataset.tab);
+        return;
+    }
+
+    const jump = event.target.closest('[data-tab-jump]');
+    if (jump) {
+        event.preventDefault();
+        if (jump.dataset.userId) {
+            state.currentUserId = Number(jump.dataset.userId);
+            renderAll();
+        }
+        setTab(jump.dataset.tabJump);
+        return;
+    }
+
+    const action = event.target.closest('[data-action]');
+    if (!action) return;
+
+    const projectId = Number(action.dataset.projectId || 0);
+    const requestId = Number(action.dataset.requestId || 0);
+
+    if (action.dataset.action === 'request') handleRequest(projectId);
+    if (action.dataset.action === 'approve') handleApprove(requestId);
+    if (action.dataset.action === 'deny') handleDeny(requestId);
+    if (action.dataset.action === 'toggle-status') handleToggleStatus(projectId);
+});
+
+document.getElementById('project-search-form').addEventListener('submit', event => {
+    event.preventDefault();
+    state.ui.q = els.q.value;
+    state.ui.major = els.major.value;
+    renderAll();
+});
+
+els.clearFilters.addEventListener('click', () => {
+    state.ui.q = '';
+    state.ui.major = '';
+    renderAll();
+});
+
+els.userSelect.addEventListener('change', () => {
+    state.currentUserId = Number(els.userSelect.value);
+    renderAll();
+});
+
+window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.replace('#', '') || 'feed';
+    state.ui.tab = ['feed', 'profile', 'requests'].includes(hash) ? hash : 'feed';
+    renderAll();
+});
+
+state.ui.tab = ['feed', 'profile', 'requests'].includes(window.location.hash.replace('#', '')) ? window.location.hash.replace('#', '') : 'feed';
+renderAll();
+</script>
+</body>
+</html>
