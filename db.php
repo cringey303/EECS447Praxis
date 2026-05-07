@@ -7,12 +7,27 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 
 function db_config(): array
 {
+    $mysqlUrl = getenv('MYSQL_URL') ?: getenv('DATABASE_URL') ?: '';
+
+    if ($mysqlUrl !== '') {
+        $parsedUrl = parse_url($mysqlUrl);
+        if ($parsedUrl !== false && isset($parsedUrl['host'], $parsedUrl['path'])) {
+            return [
+                'host' => $parsedUrl['host'],
+                'port' => (string) ($parsedUrl['port'] ?? '3306'),
+                'name' => ltrim($parsedUrl['path'], '/'),
+                'user' => $parsedUrl['user'] ?? (getenv('MYSQLUSER') ?: getenv('MYSQL_USER') ?: getenv('PRAXIS_DB_USER') ?: 'root'),
+                'pass' => $parsedUrl['pass'] ?? (getenv('MYSQLPASSWORD') ?: getenv('MYSQL_ROOT_PASSWORD') ?: getenv('MYSQL_PASS') ?: getenv('PRAXIS_DB_PASS') ?: ''),
+            ];
+        }
+    }
+
     return [
-        'host' => getenv('PRAXIS_DB_HOST') ?: '127.0.0.1',
-        'port' => getenv('PRAXIS_DB_PORT') ?: '3306',
-        'name' => getenv('PRAXIS_DB_NAME') ?: 'praxis',
-        'user' => getenv('PRAXIS_DB_USER') ?: 'root',
-        'pass' => getenv('PRAXIS_DB_PASS') ?: '',
+        'host' => getenv('PRAXIS_DB_HOST') ?: getenv('MYSQLHOST') ?: getenv('MYSQL_HOST') ?: '127.0.0.1',
+        'port' => getenv('PRAXIS_DB_PORT') ?: getenv('MYSQLPORT') ?: getenv('MYSQL_PORT') ?: '3306',
+        'name' => getenv('PRAXIS_DB_NAME') ?: getenv('MYSQL_DATABASE') ?: getenv('MYSQL_DB') ?: 'praxis',
+        'user' => getenv('PRAXIS_DB_USER') ?: getenv('MYSQLUSER') ?: getenv('MYSQL_USER') ?: 'root',
+        'pass' => getenv('PRAXIS_DB_PASS') ?: getenv('MYSQLPASSWORD') ?: getenv('MYSQL_ROOT_PASSWORD') ?: getenv('MYSQL_PASS') ?: '',
     ];
 }
 
